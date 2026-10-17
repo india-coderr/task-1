@@ -1,9 +1,3 @@
-/**
- * Standard API Response Utilities
- * Enforces consistent shape:
- * Success: { success: true, data: ... }
- * Error:   { success: false, error: { code, message, details } }
- */
 
 const sendSuccess = (res, data, statusCode = 200, meta = undefined) => {
   const payload = {

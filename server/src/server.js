@@ -41,9 +41,23 @@ app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   next();
 });
+// Flexible CORS supporting local development and deployed Vercel frontends
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+      // Allow localhost, 127.0.0.1, or any vercel.app deployment
+      if (
+        origin.endsWith('.vercel.app') ||
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1') ||
+        (process.env.CLIENT_URL && origin === process.env.CLIENT_URL)
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -53,9 +67,27 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Root route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Foodly Kitchen POS API Server',
+    status: 'online',
+    health: '/api/health',
+    docs: 'https://github.com/logics-dev/foodly-kitchen-pos#readme'
+  });
+});
+
 // Health check endpoint (always available even if DB is reconnecting)
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
   const mongoose = require('mongoose');
+  if (mongoose.connection.readyState !== 1) {
+    try {
+      await connectDB(1, 500);
+    } catch (e) {
+      // Silent on health check
+    }
+  }
   const dbConnected = mongoose.connection.readyState === 1;
   res.status(200).json({
     success: true,
@@ -68,10 +100,19 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Guard API routes: return clear 503 if database is not yet ready rather than timing out
-app.use('/api', (req, res, next) => {
+// Ensure database connection for serverless cold-starts & guard API routes
+app.use('/api', async (req, res, next) => {
   const mongoose = require('mongoose');
   if (req.path === '/health') return next();
+
+  if (mongoose.connection.readyState !== 1) {
+    try {
+      await connectDB(2, 1000);
+    } catch (err) {
+      console.error('[Database Connect Attempt Failed]:', err.message);
+    }
+  }
+
   if (mongoose.connection.readyState !== 1) {
     return res.status(503).json({
       success: false,
@@ -81,7 +122,7 @@ app.use('/api', (req, res, next) => {
         details: [
           'If ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR occurred: log in to https://cloud.mongodb.com',
           'Go to Security > Network Access and click "+ Add IP Address"',
-          'Select "Allow Access From Anywhere" (0.0.0.0/0) or add your current public IP address.'
+          'Select "Allow Access From Anywhere" (0.0.0.0/0) so cloud servers can connect.'
         ]
       }
     });

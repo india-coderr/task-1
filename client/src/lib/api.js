@@ -1,10 +1,4 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-
-/**
- * Universal fetch wrapper for Foodly Kitchen POS.
- * Automatically injects the JWT token, sets standard JSON headers,
- * and normalizes success and error shapes.
- */
 export async function apiFetch(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 

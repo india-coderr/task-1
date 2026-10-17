@@ -4,21 +4,16 @@ A full-stack Restaurant Point of Sale (POS) and Kitchen Order Management system 
 
 ---
 
-## 1. Live Deployment URL
+## 1. Live Deployment URLs
 
-- **Frontend URL (Vercel)**: https://client-indol-phi-95.vercel.app
-- **Backend API URL**: `[ Paste your Render / Railway URL here ]` (e.g. `https://foodly-pos-api.onrender.com/api`)
+- **Frontend Live App (Vercel)**: [https://client-1-sandy.vercel.app](https://client-1-sandy.vercel.app)
+- **Frontend Backup Domain (Vercel)**: [https://client-indol-phi-95.vercel.app](https://client-indol-phi-95.vercel.app)
+- **Backend API Live URL (Vercel)**: [https://server-1-ashen-seven.vercel.app/api](https://server-1-ashen-seven.vercel.app/api)
+- **Backend Health Check**: [https://server-1-ashen-seven.vercel.app/api/health](https://server-1-ashen-seven.vercel.app/api/health)
+- **Backend Service Root**: [https://server-1-ashen-seven.vercel.app](https://server-1-ashen-seven.vercel.app)
 
-### How to Deploy to Vercel (Frontend)
-1. Open terminal inside the `client` folder:
-   ```bash
-   cd client
-   vercel
-   ```
-2. Follow the prompt to log in and select your project.
-3. In your Vercel Project Settings > Environment Variables, add:
-   - `NEXT_PUBLIC_API_URL` = your live backend API URL (e.g. `https://your-backend.onrender.com/api`)
-4. Redeploy to apply the environment variable.
+> [!NOTE]
+> Both Frontend and Backend are deployed live on Vercel with zero cold-start database disconnection issues, cross-origin security configured, and connected to MongoDB Atlas. You can open and test the complete system on mobile phones, tablets, or any desktop browser immediately.
 
 ---
 
