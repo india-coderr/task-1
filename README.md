@@ -6,8 +6,7 @@ A full-stack Restaurant Point of Sale (POS) and Kitchen Order Management system 
 
 ## 1. Live Deployment URL
 
-- **Frontend URL (Vercel)**: https://client-indol-phi-95.vercel.app
-- **Backend API URL**: `[ Paste your Render / Railway URL here ]` (e.g. `https://foodly-pos-api.onrender.com/api`)
+- **Frontend URL (Vercel)**: https://client-1-sandy.vercel.app/
 
 ### How to Deploy to Vercel (Frontend)
 1. Open terminal inside the `client` folder:
