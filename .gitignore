@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+*/node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment files
+.env
+.env*.local
+*.env
+server/.env
+client/.env.local
+client/.env*.local
+
+# Allow example env files
+!.env.example
+!*/.env.example
+
+# Next.js build and cache
+.next/
+client/.next/
+out/
+client/out/
+build/
+dist/
+
+# Vercel
+.vercel/
+client/.vercel/
+
+# TypeScript cache
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# MCP / External helper tools
+unsplash-mcp/
